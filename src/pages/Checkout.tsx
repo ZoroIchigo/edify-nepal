@@ -13,8 +13,9 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("esewa");
 
   const isSingle = bookingType === "single";
+  const isPass = paymentMethod === "pass";
   const tutorFee = isSingle ? 800 : 3600;
-  const serviceFee = Math.round(tutorFee * 0.05);
+  const serviceFee = isPass ? 0 : Math.round(tutorFee * 0.05);
   const total = tutorFee + serviceFee;
 
   return (
