@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useMockUser } from "@/context/MockUserContext";
 
 interface RoleConfirmModalProps {
   open: boolean;
@@ -8,14 +10,20 @@ interface RoleConfirmModalProps {
 }
 
 const RoleConfirmModal = ({ open, onClose, role }: RoleConfirmModalProps) => {
+  const navigate = useNavigate();
+  const { login } = useMockUser();
+
   if (!open) return null;
+
+  const handleGuestLogin = () => {
+    login({ name: "Mahima Thapa", role: "Student", grade: "Grade 12" });
+    onClose();
+    navigate("/");
+  };
 
   return (
     <div className="fixed inset-0 z-[60]" onClick={onClose}>
-      {/* Overlay */}
       <div className="absolute inset-0 bg-foreground/40" />
-
-      {/* Bottom sheet */}
       <div
         className="absolute bottom-0 left-0 right-0 bg-background rounded-t-3xl p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] animate-slide-up"
         onClick={(e) => e.stopPropagation()}
@@ -40,6 +48,14 @@ const RoleConfirmModal = ({ open, onClose, role }: RoleConfirmModalProps) => {
           </Button>
           <Button variant="outline" size="lg" className="w-full">
             Log In
+          </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            className="w-full text-muted-foreground"
+            onClick={handleGuestLogin}
+          >
+            Continue as Guest →
           </Button>
         </div>
 
