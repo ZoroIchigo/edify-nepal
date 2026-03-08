@@ -19,14 +19,14 @@ const Index = () => {
 
       {/* Sample Tutor Card Preview */}
       <section className="px-5 py-6">
-        <h2 className="text-lg font-extrabold text-foreground mb-1">Featured Tutor</h2>
+        <h2 className="text-lg font-extrabold text-foreground mb-1">Featured Tutors</h2>
         <p className="text-sm text-muted-foreground mb-4">From our verified community</p>
         <TutorCard />
       </section>
 
       <BottomNav />
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
