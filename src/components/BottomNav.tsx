@@ -1,26 +1,33 @@
 import { Home, Search, MessageCircle, User } from "lucide-react";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const tabs = [
-  { key: "home", label: "Home", icon: Home },
-  { key: "explore", label: "Explore", icon: Search },
-  { key: "inbox", label: "Inbox", icon: MessageCircle },
-  { key: "account", label: "Account", icon: User },
+  { key: "home", path: "/", label: "Home", icon: Home },
+  { key: "explore", path: "/explore", label: "Explore", icon: Search },
+  { key: "inbox", path: "/inbox", label: "Inbox", icon: MessageCircle },
+  { key: "account", path: "/account", label: "Account", icon: User },
 ] as const;
 
 const BottomNav = () => {
-  const [active, setActive] = useState<string>("home");
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
-      <div className="flex items-center justify-around py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        {tabs.map(({ key, label, icon: Icon }) => {
-          const isActive = active === key;
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 w-full bg-white border-t"
+      style={{
+        borderColor: "#E5E7EB",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+      }}
+    >
+      <div className="flex items-center justify-around py-2 max-w-[430px] mx-auto">
+        {tabs.map(({ key, path, label, icon: Icon }) => {
+          const isActive = location.pathname === path;
           return (
             <button
               key={key}
-              onClick={() => setActive(key)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 transition-colors ${
+              onClick={() => navigate(path)}
+              className={`flex flex-col items-center gap-0.5 flex-1 py-1 transition-colors ${
                 isActive ? "text-primary" : "text-muted-foreground"
               }`}
             >
