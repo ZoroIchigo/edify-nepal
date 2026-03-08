@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, BadgeCheck, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BottomNav from "@/components/BottomNav";
@@ -9,12 +9,20 @@ type PaymentMethod = "esewa" | "khalti" | "bank" | "pass";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { tutorName?: string; subject?: string; rate?: number } | null;
+
+  const tutorName = state?.tutorName || "Aaryav Sharma";
+  const tutorSubject = state?.subject || "Physics";
+  const tutorRate = state?.rate || 800;
+  const tutorInitials = tutorName.split(" ").map((w) => w[0]).join("").slice(0, 2);
+
   const [bookingType, setBookingType] = useState<BookingType>("single");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("esewa");
 
   const isSingle = bookingType === "single";
   const isPass = paymentMethod === "pass";
-  const tutorFee = isSingle ? 800 : 3600;
+  const tutorFee = isSingle ? tutorRate : tutorRate * 5 * 0.9;
   const serviceFee = isPass ? 0 : Math.round(tutorFee * 0.05);
   const total = tutorFee + serviceFee;
 
@@ -34,20 +42,19 @@ const Checkout = () => {
         <div className="bg-card rounded-2xl p-4">
           <div className="flex items-start gap-3 mb-3">
             <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-extrabold text-lg flex-shrink-0">
-              AS
+              {tutorInitials}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-bold text-foreground">Aaryav Sharma</h3>
+              <h3 className="text-base font-bold text-foreground">{tutorName}</h3>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                 <span className="flex items-center gap-1 text-xs text-primary font-semibold">
                   <BadgeCheck size={14} /> ID Verified
                 </span>
-                <span className="text-xs text-muted-foreground">🎓 B.Sc. Physics, TU</span>
               </div>
             </div>
           </div>
           <div className="flex gap-2 mb-3">
-            <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">Physics</span>
+            <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">{tutorSubject}</span>
           </div>
           <p className="text-sm font-semibold text-foreground">Saturday, July 18 • 10:00 AM – 11:00 AM</p>
           <p className="text-xs text-muted-foreground mt-1">Online via Edify Meet</p>
@@ -67,7 +74,7 @@ const Checkout = () => {
             <span className="text-2xl">📅</span>
             <p className="text-sm font-bold text-foreground mt-2">Single Lesson</p>
             <p className="text-xs text-muted-foreground">One-time</p>
-            <p className="text-base font-extrabold text-foreground mt-2">NPR 800</p>
+            <p className="text-base font-extrabold text-foreground mt-2">NPR {tutorRate.toLocaleString()}</p>
           </button>
           <button
             onClick={() => setBookingType("package")}
@@ -82,8 +89,8 @@ const Checkout = () => {
             <p className="text-sm font-bold text-foreground mt-2">5-Lesson Package</p>
             <p className="text-xs text-muted-foreground">Best value</p>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-base font-extrabold text-foreground">NPR 3,600</span>
-              <span className="text-xs text-muted-foreground line-through">NPR 4,000</span>
+              <span className="text-base font-extrabold text-foreground">NPR {(tutorRate * 5 * 0.9).toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground line-through">NPR {(tutorRate * 5).toLocaleString()}</span>
             </div>
           </button>
         </div>
