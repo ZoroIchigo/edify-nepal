@@ -89,8 +89,8 @@ const Checkout = () => {
             <p className="text-sm font-bold text-foreground mt-2">5-Lesson Package</p>
             <p className="text-xs text-muted-foreground">Best value</p>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-base font-extrabold text-foreground">NPR 3,600</span>
-              <span className="text-xs text-muted-foreground line-through">NPR 4,000</span>
+              <span className="text-base font-extrabold text-foreground">NPR {(tutorRate * 5 * 0.9).toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground line-through">NPR {(tutorRate * 5).toLocaleString()}</span>
             </div>
           </button>
         </div>
