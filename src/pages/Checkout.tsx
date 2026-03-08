@@ -42,20 +42,19 @@ const Checkout = () => {
         <div className="bg-card rounded-2xl p-4">
           <div className="flex items-start gap-3 mb-3">
             <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-extrabold text-lg flex-shrink-0">
-              AS
+              {tutorInitials}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-bold text-foreground">Aaryav Sharma</h3>
+              <h3 className="text-base font-bold text-foreground">{tutorName}</h3>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                 <span className="flex items-center gap-1 text-xs text-primary font-semibold">
                   <BadgeCheck size={14} /> ID Verified
                 </span>
-                <span className="text-xs text-muted-foreground">🎓 B.Sc. Physics, TU</span>
               </div>
             </div>
           </div>
           <div className="flex gap-2 mb-3">
-            <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">Physics</span>
+            <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">{tutorSubject}</span>
           </div>
           <p className="text-sm font-semibold text-foreground">Saturday, July 18 • 10:00 AM – 11:00 AM</p>
           <p className="text-xs text-muted-foreground mt-1">Online via Edify Meet</p>
