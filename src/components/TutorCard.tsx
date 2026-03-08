@@ -1,7 +1,10 @@
 import { BadgeCheck, Star, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const TutorCard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-card rounded-2xl p-4 shadow-sm">
       <div className="flex items-start gap-3 mb-3">
@@ -46,7 +49,7 @@ const TutorCard = () => {
           <span className="text-lg font-extrabold text-foreground">NPR 800</span>
           <span className="text-xs text-muted-foreground ml-1">/ hour</span>
         </div>
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary" size="sm" onClick={() => navigate("/checkout")}>
           Book Trial Lesson
         </Button>
       </div>
