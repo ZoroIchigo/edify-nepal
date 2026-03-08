@@ -9,12 +9,20 @@ type PaymentMethod = "esewa" | "khalti" | "bank" | "pass";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { tutorName?: string; subject?: string; rate?: number } | null;
+
+  const tutorName = state?.tutorName || "Aaryav Sharma";
+  const tutorSubject = state?.subject || "Physics";
+  const tutorRate = state?.rate || 800;
+  const tutorInitials = tutorName.split(" ").map((w) => w[0]).join("").slice(0, 2);
+
   const [bookingType, setBookingType] = useState<BookingType>("single");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("esewa");
 
   const isSingle = bookingType === "single";
   const isPass = paymentMethod === "pass";
-  const tutorFee = isSingle ? 800 : 3600;
+  const tutorFee = isSingle ? tutorRate : tutorRate * 5 * 0.9;
   const serviceFee = isPass ? 0 : Math.round(tutorFee * 0.05);
   const total = tutorFee + serviceFee;
 
