@@ -74,7 +74,7 @@ const Checkout = () => {
             <span className="text-2xl">📅</span>
             <p className="text-sm font-bold text-foreground mt-2">Single Lesson</p>
             <p className="text-xs text-muted-foreground">One-time</p>
-            <p className="text-base font-extrabold text-foreground mt-2">NPR 800</p>
+            <p className="text-base font-extrabold text-foreground mt-2">NPR {tutorRate.toLocaleString()}</p>
           </button>
           <button
             onClick={() => setBookingType("package")}
