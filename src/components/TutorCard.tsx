@@ -49,7 +49,7 @@ const TutorCard = () => {
           <span className="text-lg font-extrabold text-foreground">NPR 800</span>
           <span className="text-xs text-muted-foreground ml-1">/ hour</span>
         </div>
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary" size="sm" onClick={() => navigate("/checkout")}>
           Book Trial Lesson
         </Button>
       </div>
