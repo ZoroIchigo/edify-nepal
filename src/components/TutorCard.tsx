@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const TutorCard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-card rounded-2xl p-4 shadow-sm">
       <div className="flex items-start gap-3 mb-3">
