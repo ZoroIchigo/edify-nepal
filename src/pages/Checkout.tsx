@@ -98,10 +98,17 @@ const Checkout = () => {
               <span className="text-muted-foreground">Tutor Fee</span>
               <span className="font-semibold text-foreground">NPR {tutorFee.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Service Fee (5%)</span>
-              <span className="font-semibold text-foreground">NPR {serviceFee}</span>
-            </div>
+            {isPass && (
+              <p className="text-xs font-semibold" style={{ color: "#667e55" }}>
+                ✅ Service fee waived — Student Pass active
+              </p>
+            )}
+            {!isPass && (
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Service Fee (5%)</span>
+                <span className="font-semibold text-foreground">NPR {serviceFee}</span>
+              </div>
+            )}
             <div className="border-t border-border my-2" />
             <div className="flex justify-between">
               <span className="font-bold text-foreground text-base">Total</span>
@@ -109,18 +116,20 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-        {/* Upsell */}
-        <div className="mt-3 border-l-4 border-secondary bg-secondary/[0.08] rounded-2xl p-4 flex items-start gap-3">
-          <Zap size={18} className="text-secondary flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-xs font-semibold text-foreground leading-relaxed">
-              Remove service fees forever — Upgrade to Student Pass for NPR 250/month
-            </p>
-            <button className="text-xs font-bold text-secondary mt-1 hover:underline">
-              See Student Pass benefits →
-            </button>
+        {/* Upsell - hidden when Student Pass selected */}
+        {!isPass && (
+          <div className="mt-3 border-l-4 border-secondary bg-secondary/[0.08] rounded-2xl p-4 flex items-start gap-3">
+            <Zap size={18} className="text-secondary flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-semibold text-foreground leading-relaxed">
+                Remove service fees forever — Upgrade to Student Pass for NPR 250/month
+              </p>
+              <button className="text-xs font-bold text-secondary mt-1 hover:underline">
+                See Student Pass benefits →
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* Payment Method */}
