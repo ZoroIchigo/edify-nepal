@@ -4,7 +4,8 @@ import RoleSelector from "@/components/RoleSelector";
 import SocialProofStrip from "@/components/SocialProofStrip";
 import HowItWorks from "@/components/HowItWorks";
 import TrustBanner from "@/components/TrustBanner";
-import TutorCard from "@/components/TutorCard";
+import FeaturedTutorsCarousel from "@/components/FeaturedTutorsCarousel";
+import GoodFitGuarantee from "@/components/GoodFitGuarantee";
 import BottomNav from "@/components/BottomNav";
 
 const Index = () => {
@@ -14,16 +15,10 @@ const Index = () => {
       <HeroSection />
       <RoleSelector />
       <SocialProofStrip />
+      <FeaturedTutorsCarousel />
+      <GoodFitGuarantee />
       <HowItWorks />
       <TrustBanner />
-
-      {/* Sample Tutor Card Preview */}
-      <section className="px-5 py-6">
-        <h2 className="text-lg font-extrabold text-foreground mb-1">Featured Tutors</h2>
-        <p className="text-sm text-muted-foreground mb-4">From our verified community</p>
-        <TutorCard />
-      </section>
-
       <BottomNav />
     </div>);
 

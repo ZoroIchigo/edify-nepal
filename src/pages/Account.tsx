@@ -4,7 +4,7 @@ import {
   ArrowLeft, Camera, ChevronRight, BookOpen, Brain, CalendarDays,
   CreditCard, Palette, Headphones, LogOut, Star, Check, X, Plus,
   ChevronLeft, ChevronRight as ChevronRightIcon, Clock, Video,
-  Link as LinkIcon, ShieldCheck, Upload
+  Link as LinkIcon, ShieldCheck, Upload, HelpCircle, ChevronDown
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,8 @@ type Screen =
   | "schedule"
   | "addEvent"
   | "avatarBuilder"
-  | "adultVerification";
+  | "adultVerification"
+  | "faq";
 
 type QuizStep = 1 | 2 | 3;
 
@@ -64,7 +65,7 @@ const quizSubjects = ["Math", "Physics", "Chemistry", "English", "Biology", "Soc
 const Account = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useMockUser();
+  const { user, logout } = useMockUser();
   const [screen, setScreen] = useState<Screen>("main");
 
   // Handle navigation state from other pages (e.g., Inbox → Schedule)
@@ -105,6 +106,9 @@ const Account = () => {
   const [nationalIdUploaded, setNationalIdUploaded] = useState(false);
   const [studentIdUploaded, setStudentIdUploaded] = useState(false);
   const [verificationSubmitted, setVerificationSubmitted] = useState(false);
+
+  // FAQ
+  const [faqOpen, setFaqOpen] = useState(-1);
 
   const getInitials = (name: string) =>
     name.split(" ").map(n => n[0]).join("").toUpperCase();
@@ -602,8 +606,58 @@ const Account = () => {
   }
 
   // ══════════════════════════════════════════
+  // FAQ SCREEN
+  // ══════════════════════════════════════════
+  const faqItems = [
+    { q: "What is a Student Pass?", a: "A Student Pass is a subscription system for users who book multiple lessons in a month. It removes any service charges included with booking for just NPR 250 a month." },
+    { q: "What is a Household Account?", a: "A Household Account is a type of account created for parents which links their child's or children's accounts in a single place. It helps parents monitor, track, provide insight and schedule or book lessons on their child's behalf." },
+    { q: "What if I don't like the Tutor after a lesson?", a: "With our Good Fit Guarantee, we will return the booking fee (excluding service charge) for the first hour of your lesson if it did not live up to your expectations." },
+    { q: "How do I cancel or reschedule a lesson?", a: "You can cancel or reschedule any upcoming lesson up to 2 hours before the session starts. Go to Schedule in your Account page, select the lesson and tap 'Reschedule' or 'Cancel.' Refunds are processed within 24 hours to your original payment method." },
+    { q: "Is my child's data safe on Edify?", a: "Yes. Edify uses end-to-end encryption for all messages and stores your child's data in compliance with Nepal's privacy standards. Parents have full visibility and control over their child's account through the Household Account feature. We never share personal data with third parties." },
+  ];
+
+  if (screen === "faq") {
+    return (
+      <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
+        <SubHeader title="FAQs" />
+        <div className="px-5 pt-4">
+          <p className="text-sm text-muted-foreground mb-5">Everything you need to know about Edify</p>
+          <div className="flex flex-col gap-3">
+            {faqItems.map((item, i) => {
+              const [open, setOpen] = [faqOpen === i, (v: boolean) => setFaqOpen(v ? i : -1)];
+              return (
+                <button
+                  key={i}
+                  onClick={() => setOpen(!open)}
+                  className={`w-full text-left rounded-xl border border-border p-4 transition-all ${open ? "bg-muted" : "bg-background"}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-foreground flex-1 pr-2">{item.q}</span>
+                    <ChevronDown size={16} className={`text-muted-foreground transition-transform shrink-0 ${open ? "rotate-180" : ""}`} />
+                  </div>
+                  {open && (
+                    <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{item.a}</p>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <BottomNav />
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════
   // MAIN ACCOUNT SCREEN
   // ══════════════════════════════════════════
+  const isGuest = user?.name === "Guest";
+  const displayName = isGuest ? "Guest" : (user?.name || "Sushant Thapa");
+  const displaySubtitle = isGuest ? "Browsing as Guest" : `${user?.role || "Student"} • ${user?.grade || "Grade 11"}`;
+  const avatarInitials = isGuest ? "G" : getInitials(displayName);
+  const avatarBg = isGuest ? "bg-[hsl(220,9%,46%)]" : "bg-secondary";
+  const showVerifiedTick = adultVerified && !isGuest;
+
   const menuGroups = [
     {
       label: "My Learning",
@@ -625,6 +679,12 @@ const Account = () => {
       label: "Account & Billing",
       items: [
         { icon: CreditCard, label: "Transaction History", action: () => setScreen("transactions") },
+      ],
+    },
+    {
+      label: "Help & FAQ",
+      items: [
+        { icon: HelpCircle, label: "Frequently Asked Questions", action: () => setScreen("faq") },
       ],
     },
     {
@@ -672,20 +732,39 @@ const Account = () => {
       {/* Profile header */}
       <div className="flex flex-col items-center pt-6 pb-4 px-5">
         <div className="relative mb-3">
-          <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
-            <span className="text-2xl font-extrabold text-secondary-foreground">ST</span>
+          <div className={`w-24 h-24 rounded-full ${avatarBg} flex items-center justify-center`}>
+            <span className="text-2xl font-extrabold text-secondary-foreground">{avatarInitials}</span>
           </div>
-          <button
-            onClick={() => setPhotoSheet(true)}
-            className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm"
-          >
-            <Camera size={14} className="text-muted-foreground" />
-          </button>
+          {showVerifiedTick && (
+            <div className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-primary flex items-center justify-center border-2 border-background">
+              <Check size={12} className="text-primary-foreground" strokeWidth={3} />
+            </div>
+          )}
+          {!isGuest && (
+            <button
+              onClick={() => setPhotoSheet(true)}
+              className="absolute bottom-0 left-0 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm"
+            >
+              <Camera size={14} className="text-muted-foreground" />
+            </button>
+          )}
         </div>
-        <h1 className="text-xl font-extrabold text-foreground">Sushant Thapa</h1>
-        <p className="text-sm text-muted-foreground mb-1.5">Student • Grade 11</p>
-        <Badge className="bg-primary/10 text-primary border-0 font-bold text-xs">✅ ID Verified</Badge>
+        <h1 className="text-xl font-extrabold text-foreground">{displayName}</h1>
+        <p className="text-sm text-muted-foreground mb-1.5">{displaySubtitle}</p>
       </div>
+
+      {/* Guest banner */}
+      {isGuest && (
+        <div className="mx-5 mb-4 rounded-xl bg-secondary/[0.08] border-l-4 border-l-secondary p-4">
+          <p className="text-sm font-bold text-foreground mb-1">🔓 You're browsing as a guest</p>
+          <p className="text-xs text-muted-foreground mb-3">
+            Create an account to book tutors, track progress and access all features.
+          </p>
+          <Button variant="secondary" className="w-full" onClick={() => navigate("/")}>
+            Create Account →
+          </Button>
+        </div>
+      )}
 
       {/* Menu groups */}
       <div className="px-5 pb-6">
