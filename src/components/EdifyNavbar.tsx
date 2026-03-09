@@ -11,8 +11,18 @@ import {
 
 const EdifyNavbar = () => {
   const { user, login, logout } = useMockUser();
+  const location = useLocation();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
+
+  // Auto-open Sign Up sheet when navigated with state
+  useEffect(() => {
+    const state = location.state as { openSignUp?: boolean } | null;
+    if (state?.openSignUp) {
+      setSignUpOpen(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Login form
   const [loginEmail, setLoginEmail] = useState("");
