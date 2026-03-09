@@ -65,7 +65,7 @@ const quizSubjects = ["Math", "Physics", "Chemistry", "English", "Biology", "Soc
 const Account = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useMockUser();
+  const { user, logout } = useMockUser();
   const [screen, setScreen] = useState<Screen>("main");
 
   // Handle navigation state from other pages (e.g., Inbox → Schedule)
