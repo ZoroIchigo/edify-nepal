@@ -778,7 +778,7 @@ const Account = () => {
       <div className="px-5 pb-6">
         {menuGroups.map((group, gi) => (
           <div key={gi} className="mb-4">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{group.label}</p>
+            {group.label && <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{group.label}</p>}
             <div className="flex flex-col gap-2">
               {group.items.map((item, ii) => (
                 <button
