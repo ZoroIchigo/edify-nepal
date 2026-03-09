@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { BadgeCheck, Star, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,7 @@ const tutors = [
 
 const FeaturedTutorsCarousel = () => {
   const navigate = useNavigate();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: false });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", dragFree: false });
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -53,10 +53,12 @@ const FeaturedTutorsCarousel = () => {
     setActiveIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
-  // Attach listener
-  if (emblaApi) {
+  useEffect(() => {
+    if (!emblaApi) return;
     emblaApi.on("select", onSelect);
-  }
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi, onSelect]);
 
   return (
     <section className="py-6">
@@ -98,15 +100,15 @@ const FeaturedTutorsCarousel = () => {
                     <Video size={12} /> Recordings available
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-1">
                   <div>
                     <span className="text-lg font-extrabold text-foreground">{tutor.price}</span>
                     <span className="text-xs text-muted-foreground ml-1">/ hour</span>
                   </div>
-                  <Button variant="secondary" size="sm" onClick={() => navigate("/checkout", { state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: parseInt(tutor.price.replace(/\D/g, "")) } })}>
-                    Book Trial Lesson →
-                  </Button>
                 </div>
+                <Button variant="secondary" className="w-full mt-3" size="sm" onClick={() => navigate("/checkout", { state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: parseInt(tutor.price.replace(/\D/g, "")) } })}>
+                  Book Trial Lesson
+                </Button>
               </div>
             </div>
           ))}
