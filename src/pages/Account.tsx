@@ -4,7 +4,7 @@ import {
   ArrowLeft, Camera, ChevronRight, BookOpen, Brain, CalendarDays,
   CreditCard, Palette, Headphones, LogOut, Star, Check, X, Plus,
   ChevronLeft, ChevronRight as ChevronRightIcon, Clock, Video,
-  Link as LinkIcon
+  Link as LinkIcon, ShieldCheck, Upload
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,8 @@ type Screen =
   | "transactions"
   | "schedule"
   | "addEvent"
-  | "avatarBuilder";
+  | "avatarBuilder"
+  | "adultVerification";
 
 type QuizStep = 1 | 2 | 3;
 
@@ -88,6 +89,12 @@ const Account = () => {
   // Transaction parent mock
   const [childLinked, setChildLinked] = useState(false);
 
+  // Adult Verification
+  const [adultVerified, setAdultVerified] = useState(false);
+  const [nationalIdUploaded, setNationalIdUploaded] = useState(false);
+  const [studentIdUploaded, setStudentIdUploaded] = useState(false);
+  const [verificationSubmitted, setVerificationSubmitted] = useState(false);
+
   const getInitials = (name: string) =>
     name.split(" ").map(n => n[0]).join("").toUpperCase();
 
@@ -136,7 +143,6 @@ const Account = () => {
       <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
         <SubHeader title="My Learnings" />
         <div className="px-5 pt-4">
-          {/* Stats strip */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar mb-5">
             {["📚 8 Classes Taken", "⏱ 12.5 Hours", "⭐ 4 Tutors"].map(s => (
               <span key={s} className="whitespace-nowrap text-xs font-bold px-3 py-1.5 rounded-full bg-primary/10 text-primary">{s}</span>
@@ -175,7 +181,6 @@ const Account = () => {
   if (screen === "quiz") {
     return (
       <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-24">
-        {/* Step 1 */}
         {quizStep === 1 && (
           <>
             <SubHeader title="Quiz" />
@@ -202,7 +207,6 @@ const Account = () => {
             </div>
           </>
         )}
-        {/* Step 2 */}
         {quizStep === 2 && (
           <>
             <div className="sticky top-0 z-40 flex items-center gap-3 px-5 py-3 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -232,7 +236,6 @@ const Account = () => {
             </div>
           </>
         )}
-        {/* Step 3 - Quiz Game */}
         {quizStep === 3 && (
           <>
             <div className="sticky top-0 z-40 flex items-center gap-3 px-5 py-3 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -324,7 +327,6 @@ const Account = () => {
   // TRANSACTIONS
   // ══════════════════════════════════════════
   if (screen === "transactions") {
-    // Student locked view
     if (mockRole === "student") {
       return (
         <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
@@ -342,7 +344,6 @@ const Account = () => {
       );
     }
 
-    // Parent view
     return (
       <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
         <SubHeader title="Transaction History" />
@@ -485,6 +486,111 @@ const Account = () => {
   }
 
   // ══════════════════════════════════════════
+  // ADULT VERIFICATION
+  // ══════════════════════════════════════════
+  if (screen === "adultVerification") {
+    return (
+      <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-24">
+        <SubHeader title="Adult Verification" />
+        <div className="px-5 pt-4">
+          <p className="text-sm text-muted-foreground mb-5">Upload a valid ID to unlock adult features</p>
+
+          {!verificationSubmitted ? (
+            <>
+              {/* Info card */}
+              <div className="rounded-xl bg-primary/[0.06] border-l-4 border-l-primary p-4 mb-6">
+                <p className="text-sm font-bold text-foreground mb-2">Once verified, you'll have access to:</p>
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-sm text-foreground">✅ Full messaging with tutors</span>
+                  <span className="text-sm text-foreground">✅ Voice & video calls</span>
+                  <span className="text-sm text-foreground">✅ Transaction history</span>
+                  <span className="text-sm text-foreground">✅ Sending images and documents</span>
+                </div>
+              </div>
+
+              {/* Upload cards */}
+              <div className="flex flex-col gap-4 mb-4">
+                {/* National ID */}
+                <button
+                  onClick={() => setNationalIdUploaded(true)}
+                  className={`w-full rounded-xl p-6 flex flex-col items-center gap-2 transition-all ${
+                    nationalIdUploaded
+                      ? "bg-primary/[0.06] border-2 border-primary"
+                      : "border-2 border-dashed border-secondary"
+                  }`}
+                >
+                  {nationalIdUploaded ? (
+                    <>
+                      <ShieldCheck size={32} className="text-primary" />
+                      <span className="text-sm font-bold text-foreground">🪪 National ID Card</span>
+                      <span className="text-sm font-bold text-primary">✅ Document uploaded</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={32} className="text-secondary" />
+                      <span className="text-sm font-bold text-foreground">🪪 National ID Card</span>
+                      <span className="text-xs text-muted-foreground">Tap to upload front of ID</span>
+                      <span className="text-[10px] text-muted-foreground">Accepted: JPG, PNG, PDF</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Student ID */}
+                <button
+                  onClick={() => setStudentIdUploaded(true)}
+                  className={`w-full rounded-xl p-6 flex flex-col items-center gap-2 transition-all ${
+                    studentIdUploaded
+                      ? "bg-primary/[0.06] border-2 border-primary"
+                      : "border-2 border-dashed border-secondary"
+                  }`}
+                >
+                  {studentIdUploaded ? (
+                    <>
+                      <ShieldCheck size={32} className="text-primary" />
+                      <span className="text-sm font-bold text-foreground">🎓 Student ID Card</span>
+                      <span className="text-sm font-bold text-primary">✅ Document uploaded</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={32} className="text-secondary" />
+                      <span className="text-sm font-bold text-foreground">🎓 Student ID Card</span>
+                      <span className="text-xs text-muted-foreground">Tap to upload Student ID</span>
+                      <span className="text-[10px] text-muted-foreground">Accepted: JPG, PNG, PDF</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <p className="text-xs text-muted-foreground text-center mb-5">Either document is sufficient</p>
+
+              <Button
+                className="w-full"
+                disabled={!nationalIdUploaded && !studentIdUploaded}
+                onClick={() => setVerificationSubmitted(true)}
+              >
+                Submit for Verification →
+              </Button>
+            </>
+          ) : (
+            /* Pending state */
+            <div className="flex flex-col items-center text-center pt-8">
+              <div className="w-20 h-20 rounded-full bg-warning/10 flex items-center justify-center mb-4">
+                <span className="text-4xl">⏳</span>
+              </div>
+              <p className="text-lg font-extrabold text-foreground mb-2">Verification Under Review</p>
+              <p className="text-sm text-muted-foreground mb-4">
+                We'll notify you within 24 hours. You can continue using Edify while you wait.
+              </p>
+              <Badge className="bg-warning/10 text-warning border-0 font-bold text-xs">Pending Review</Badge>
+            </div>
+          )}
+        </div>
+        <BottomNav />
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════
   // MAIN ACCOUNT SCREEN
   // ══════════════════════════════════════════
   const menuGroups = [
@@ -508,6 +614,26 @@ const Account = () => {
       label: "Account & Billing",
       items: [
         { icon: CreditCard, label: "Transaction History", action: () => setScreen("transactions") },
+      ],
+    },
+    {
+      label: "Verification",
+      items: [
+        {
+          icon: ShieldCheck,
+          label: "Verify you're an Adult",
+          subtitle: "Unlock full messaging and transaction features",
+          action: () => setScreen("adultVerification"),
+          badge: (
+            <Badge className={`shrink-0 border-0 font-bold text-xs ${
+              adultVerified
+                ? "bg-primary/10 text-primary"
+                : "bg-warning/10 text-warning"
+            }`}>
+              {adultVerified ? "✅ Verified" : "Not Verified"}
+            </Badge>
+          ),
+        },
       ],
     },
     {
@@ -563,7 +689,12 @@ const Account = () => {
                   className="flex items-center gap-3 w-full p-4 rounded-xl bg-background border border-border shadow-sm text-left transition-all active:scale-[0.98]"
                 >
                   <item.icon size={20} className={(item as any).destructive ? "text-destructive" : "text-foreground"} />
-                  <span className={`text-sm font-bold flex-1 ${(item as any).destructive ? "text-destructive" : "text-foreground"}`}>{item.label}</span>
+                  <div className="flex-1 min-w-0">
+                    <span className={`text-sm font-bold block ${(item as any).destructive ? "text-destructive" : "text-foreground"}`}>{item.label}</span>
+                    {(item as any).subtitle && (
+                      <span className="text-xs text-muted-foreground block">{(item as any).subtitle}</span>
+                    )}
+                  </div>
                   {(item as any).badge && (item as any).badge}
                   {!(item as any).destructive && !(item as any).badge && <ChevronRight size={18} className="text-muted-foreground" />}
                 </button>
