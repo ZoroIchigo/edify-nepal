@@ -11,6 +11,7 @@ const HeroSection = () => {
 
       <div className="relative z-10">
         <h1 className="text-[28px] leading-tight font-extrabold text-foreground mb-3">Verified Tutors. Real Results.
+
           <br />
           Fair Pay. Real Results.
         </h1>
@@ -19,7 +20,6 @@ const HeroSection = () => {
         </p>
       </div>
     </section>);
-
 };
 
 export default HeroSection;
