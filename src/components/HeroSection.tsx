@@ -10,7 +10,7 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10">
-        <h1 className="text-[28px] leading-tight font-extrabold text-foreground mb-3">Verified Tutors. Real Results.
+        <h1 className="text-[28px] leading-tight font-extrabold text-foreground mb-3 font-serif">Verified Tutors. Real Results.
 
           <br />
           Fair Pay. Real Results.
