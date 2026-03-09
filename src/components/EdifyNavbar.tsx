@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +11,18 @@ import {
 
 const EdifyNavbar = () => {
   const { user, login, logout } = useMockUser();
+  const location = useLocation();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
+
+  // Auto-open Sign Up sheet when navigated with state
+  useEffect(() => {
+    const state = location.state as { openSignUp?: boolean } | null;
+    if (state?.openSignUp) {
+      setSignUpOpen(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Login form
   const [loginEmail, setLoginEmail] = useState("");

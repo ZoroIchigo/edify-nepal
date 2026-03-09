@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const GoodFitGuarantee = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="px-5 py-2">
       <div className="relative rounded-2xl p-5 overflow-hidden border-l-4 border-l-primary"
@@ -11,7 +15,12 @@ const GoodFitGuarantee = () => {
           <p className="text-xs text-muted-foreground leading-relaxed mb-2">
             Not satisfied with your first hour? We'll refund your full booking fee — no questions asked.
           </p>
-          <button className="text-xs font-bold text-primary">Learn how it works →</button>
+          <button
+            className="text-xs font-bold text-primary"
+            onClick={() => navigate("/account", { state: { screen: "faq", faqIndex: 2 } })}
+          >
+            Learn how it works →
+          </button>
         </div>
         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-5xl font-extrabold text-secondary/10 select-none pointer-events-none">
           100%

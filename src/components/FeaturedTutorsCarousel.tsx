@@ -103,7 +103,7 @@ const FeaturedTutorsCarousel = () => {
                     <span className="text-lg font-extrabold text-foreground">{tutor.price}</span>
                     <span className="text-xs text-muted-foreground ml-1">/ hour</span>
                   </div>
-                  <Button variant="secondary" size="sm" onClick={() => navigate("/checkout")}>
+                  <Button variant="secondary" size="sm" onClick={() => navigate("/checkout", { state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: parseInt(tutor.price.replace(/\D/g, "")) } })}>
                     Book Trial Lesson →
                   </Button>
                 </div>

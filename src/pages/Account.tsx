@@ -70,9 +70,12 @@ const Account = () => {
 
   // Handle navigation state from other pages (e.g., Inbox → Schedule)
   useEffect(() => {
-    const state = location.state as { screen?: Screen } | null;
+    const state = location.state as { screen?: Screen; faqIndex?: number } | null;
     if (state?.screen) {
       setScreen(state.screen);
+      if (state.faqIndex !== undefined) {
+        setFaqOpen(state.faqIndex);
+      }
       // Clear the state to prevent re-triggering on refresh
       window.history.replaceState({}, document.title);
     }
@@ -760,7 +763,7 @@ const Account = () => {
           <p className="text-xs text-muted-foreground mb-3">
             Create an account to book tutors, track progress and access all features.
           </p>
-          <Button variant="secondary" className="w-full" onClick={() => navigate("/")}>
+          <Button variant="secondary" className="w-full" onClick={() => navigate("/", { state: { openSignUp: true } })}>
             Create Account →
           </Button>
         </div>
