@@ -763,7 +763,7 @@ const Account = () => {
           <p className="text-xs text-muted-foreground mb-3">
             Create an account to book tutors, track progress and access all features.
           </p>
-          <Button variant="secondary" className="w-full" onClick={() => navigate("/")}>
+          <Button variant="secondary" className="w-full" onClick={() => navigate("/", { state: { openSignUp: true } })}>
             Create Account →
           </Button>
         </div>
