@@ -10,10 +10,8 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10">
-        <h1 className="text-[28px] leading-tight font-extrabold text-foreground mb-3 font-serif">Verified Tutors. Real Results.
-
-          <br />
-          Fair Pay. Real Results.
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '36px', lineHeight: 1.2, color: '#1A1A1A' }}>
+          Verified Tutors.<br />Real Results.
         </h1>
         <p className="text-muted-foreground text-base">
           Nepal's trust-first tutoring marketplace.
