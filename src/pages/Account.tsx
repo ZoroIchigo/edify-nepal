@@ -729,9 +729,6 @@ const Account = () => {
       ],
     },
   ];
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
