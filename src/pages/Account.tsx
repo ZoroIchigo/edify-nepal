@@ -26,7 +26,8 @@ type Screen =
   | "schedule"
   | "addEvent"
   | "avatarBuilder"
-  | "adultVerification";
+  | "adultVerification"
+  | "faq";
 
 type QuizStep = 1 | 2 | 3;
 
