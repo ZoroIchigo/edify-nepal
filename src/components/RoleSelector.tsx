@@ -5,7 +5,6 @@ import RoleConfirmModal from "@/components/RoleConfirmModal";
 
 const roles = [
   { key: "student", label: "Student", icon: GraduationCap },
-  { key: "tutor", label: "Tutor", icon: BookOpen },
   { key: "parent", label: "Parent", icon: Users },
 ] as const;
 
