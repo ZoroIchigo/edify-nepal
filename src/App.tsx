@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import Checkout from "./pages/Checkout";
 import BookingConfirmed from "./pages/BookingConfirmed";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
