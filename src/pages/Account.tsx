@@ -107,6 +107,9 @@ const Account = () => {
   const [studentIdUploaded, setStudentIdUploaded] = useState(false);
   const [verificationSubmitted, setVerificationSubmitted] = useState(false);
 
+  // FAQ
+  const [faqOpen, setFaqOpen] = useState(-1);
+
   const getInitials = (name: string) =>
     name.split(" ").map(n => n[0]).join("").toUpperCase();
 
