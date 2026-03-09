@@ -70,9 +70,12 @@ const Account = () => {
 
   // Handle navigation state from other pages (e.g., Inbox → Schedule)
   useEffect(() => {
-    const state = location.state as { screen?: Screen } | null;
+    const state = location.state as { screen?: Screen; faqIndex?: number } | null;
     if (state?.screen) {
       setScreen(state.screen);
+      if (state.faqIndex !== undefined) {
+        setFaqOpen(state.faqIndex);
+      }
       // Clear the state to prevent re-triggering on refresh
       window.history.replaceState({}, document.title);
     }
