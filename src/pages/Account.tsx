@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft, Camera, ChevronRight, BookOpen, Brain, CalendarDays,
   CreditCard, Palette, Headphones, LogOut, Star, Check, X, Plus,
@@ -63,8 +63,19 @@ const quizSubjects = ["Math", "Physics", "Chemistry", "English", "Biology", "Soc
 
 const Account = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useMockUser();
   const [screen, setScreen] = useState<Screen>("main");
+
+  // Handle navigation state from other pages (e.g., Inbox → Schedule)
+  useEffect(() => {
+    const state = location.state as { screen?: Screen } | null;
+    if (state?.screen) {
+      setScreen(state.screen);
+      // Clear the state to prevent re-triggering on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Drawers
   const [photoSheet, setPhotoSheet] = useState(false);
