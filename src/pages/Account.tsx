@@ -4,7 +4,7 @@ import {
   ArrowLeft, Camera, ChevronRight, BookOpen, Brain, CalendarDays,
   CreditCard, Palette, Headphones, LogOut, Star, Check, X, Plus,
   ChevronLeft, ChevronRight as ChevronRightIcon, Clock, Video,
-  Link as LinkIcon, ShieldCheck, Upload
+  Link as LinkIcon, ShieldCheck, Upload, HelpCircle, ChevronDown
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
