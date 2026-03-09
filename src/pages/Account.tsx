@@ -685,12 +685,6 @@ const Account = () => {
       ],
     },
     {
-      label: "Help & FAQ",
-      items: [
-        { icon: HelpCircle, label: "Frequently Asked Questions", action: () => setScreen("faq") },
-      ],
-    },
-    {
       label: "Verification",
       items: [
         {
@@ -720,7 +714,21 @@ const Account = () => {
       label: "Support",
       items: [
         { icon: Headphones, label: "Help & Support", action: () => setHelpSheet(true) },
+      ],
+    },
+    {
+      label: "FAQs",
+      items: [
+        { icon: HelpCircle, label: "Frequently Asked Questions", action: () => setScreen("faq") },
+      ],
+    },
+    {
+      label: "",
+      items: [
         { icon: LogOut, label: "Log Out", action: () => setLogoutSheet(true), destructive: true },
+      ],
+    },
+  ];
       ],
     },
   ];

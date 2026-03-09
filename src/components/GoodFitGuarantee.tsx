@@ -22,7 +22,7 @@ const GoodFitGuarantee = () => {
             Learn how it works →
           </button>
         </div>
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-5xl font-extrabold text-secondary/10 select-none pointer-events-none">
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-5xl font-extrabold text-secondary/[0.08] select-none pointer-events-none">
           100%
         </span>
       </div>
