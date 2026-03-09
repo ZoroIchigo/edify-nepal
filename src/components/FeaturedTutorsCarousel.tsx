@@ -45,7 +45,7 @@ const tutors = [
 
 const FeaturedTutorsCarousel = () => {
   const navigate = useNavigate();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: false });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", dragFree: false });
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -53,10 +53,12 @@ const FeaturedTutorsCarousel = () => {
     setActiveIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
-  // Attach listener
-  if (emblaApi) {
+  useEffect(() => {
+    if (!emblaApi) return;
     emblaApi.on("select", onSelect);
-  }
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi, onSelect]);
 
   return (
     <section className="py-6">
