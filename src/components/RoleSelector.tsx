@@ -19,7 +19,7 @@ const RoleSelector = () => {
       <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
         I am a...
       </p>
-      <div className="grid grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-2 gap-3 mb-4">
         {roles.map(({ key, label, icon: Icon }) => {
           const active = selected === key;
           return (
