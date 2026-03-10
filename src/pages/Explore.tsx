@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, MapPin, BadgeCheck, Star, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import BottomNav from "@/components/BottomNav";
 
 type Step = 1 | 2 | 3 | 4;
+type SortOption = "ratings" | "hours" | "reviews";
 
 const GRADE_OPTIONS = [
   "No preference",
@@ -25,12 +32,32 @@ const AVAILABILITY_OPTIONS = [
 ];
 
 const MOCK_TUTORS = [
-  { name: "Priya Shrestha", initials: "PS", rate: 700, degree: "B.Sc. Physics, TU", rating: 4.8, reviews: 24, subjects: ["Physics", "Math"] },
-  { name: "Rohan Adhikari", initials: "RA", rate: 900, degree: "M.Sc. Physics, KU", rating: 4.9, reviews: 41, subjects: ["Physics"] },
-  { name: "Sneha Maharjan", initials: "SM", rate: 650, degree: "B.Com. English, TU", rating: 4.7, reviews: 18, subjects: ["English", "Economics"] },
-  { name: "Aakash Thapa", initials: "AT", rate: 800, degree: "B.Sc. Physics, PU", rating: 5.0, reviews: 9, subjects: ["Physics", "Math"] },
-  { name: "Nisha Pandey", initials: "NP", rate: 750, degree: "M.Ed. Physics, TU", rating: 4.9, reviews: 33, subjects: ["Physics"] },
+  { name: "Priya Shrestha", initials: "PS", rate: 700, degree: "B.Sc. Physics, TU", rating: 4.8, reviews: 24, subjects: ["Physics", "Math"], hoursTaught: 98 },
+  { name: "Rohan Adhikari", initials: "RA", rate: 900, degree: "M.Sc. Physics, KU", rating: 4.9, reviews: 41, subjects: ["Physics"], hoursTaught: 201 },
+  { name: "Sneha Maharjan", initials: "SM", rate: 650, degree: "B.Com. English, TU", rating: 4.7, reviews: 18, subjects: ["English", "Economics"], hoursTaught: 67 },
+  { name: "Aakash Thapa", initials: "AT", rate: 800, degree: "B.Sc. Physics, PU", rating: 5.0, reviews: 9, subjects: ["Physics", "Math"], hoursTaught: 31 },
+  { name: "Nisha Pandey", initials: "NP", rate: 750, degree: "M.Ed. Physics, TU", rating: 4.9, reviews: 33, subjects: ["Physics"], hoursTaught: 118 },
 ];
+
+const SORT_OPTIONS: { value: SortOption; icon: string; label: string; subtitle: string }[] = [
+  { value: "ratings", icon: "⭐", label: "Ratings", subtitle: "Highest rated tutors first" },
+  { value: "hours", icon: "⏱", label: "Hours Taught", subtitle: "Most experienced tutors first" },
+  { value: "reviews", icon: "💬", label: "Number of Reviews", subtitle: "Most reviewed tutors first" },
+];
+
+const SORT_LABELS: Record<SortOption, string> = {
+  ratings: "Ratings",
+  hours: "Hours",
+  reviews: "Reviews",
+};
+
+function sortTutors(tutors: typeof MOCK_TUTORS, sort: SortOption) {
+  return [...tutors].sort((a, b) => {
+    if (sort === "ratings") return b.rating - a.rating || b.reviews - a.reviews;
+    if (sort === "hours") return b.hoursTaught - a.hoursTaught;
+    return b.reviews - a.reviews;
+  });
+}
 
 const Explore = () => {
   const navigate = useNavigate();
@@ -40,6 +67,9 @@ const Explore = () => {
   const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
   const [selectedAvailability, setSelectedAvailability] = useState<string | null>(null);
   const [onlineLocal, setOnlineLocal] = useState<"online" | "local">("online");
+  const [activeSort, setActiveSort] = useState<SortOption>("ratings");
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetSort, setSheetSort] = useState<SortOption>("ratings");
 
   const goBack = () => setStep((s) => (s > 1 ? ((s - 1) as Step) : s));
 
@@ -139,6 +169,8 @@ const Explore = () => {
     );
   }
 
+  const sortedTutors = sortTutors(MOCK_TUTORS, activeSort);
+
   // Step 4: Results
   return (
     <div className="min-h-screen bg-background max-w-[430px] mx-auto pb-20">
@@ -170,30 +202,43 @@ const Explore = () => {
         ))}
       </div>
 
-      {/* Filter chips */}
-      <div className="px-5 py-2 flex gap-2 overflow-x-auto no-scrollbar">
-        {[
-          { label: "✅ Verified Only", active: true },
-          { label: `📍 ${location}`, active: true },
-          { label: selectedGrade || "All Grades", active: !!selectedGrade },
-          { label: "🕐 Available Soon", active: false },
-        ].map((chip) => (
-          <span
-            key={chip.label}
-            className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 ${
-              chip.active
-                ? "bg-primary text-primary-foreground"
-                : "border-2 border-primary text-primary"
-            }`}
-          >
-            {chip.label}
-          </span>
-        ))}
+      {/* Filter chips + Sort button */}
+      <div className="px-5 py-2 flex items-center gap-2">
+        <div className="flex-1 flex gap-2 overflow-x-auto no-scrollbar min-w-0">
+          {[
+            { label: "✅ Verified Only", active: true },
+            { label: `📍 ${location}`, active: true },
+            { label: selectedGrade || "All Grades", active: !!selectedGrade },
+            { label: "🕐 Available Soon", active: false },
+          ].map((chip) => (
+            <span
+              key={chip.label}
+              className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 ${
+                chip.active
+                  ? "bg-primary text-primary-foreground"
+                  : "border-2 border-primary text-primary"
+              }`}
+            >
+              {chip.label}
+            </span>
+          ))}
+        </div>
+        <button
+          onClick={() => { setSheetSort(activeSort); setSheetOpen(true); }}
+          className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+            activeSort !== "ratings"
+              ? "text-primary-foreground"
+              : "border-2 text-primary border-primary"
+          }`}
+          style={activeSort !== "ratings" ? { backgroundColor: "#6D557E", color: "#fff" } : { borderColor: "#6D557E", color: "#6D557E" }}
+        >
+          ↕ {activeSort !== "ratings" ? `${SORT_LABELS[activeSort]} ✓` : "Sort"}
+        </button>
       </div>
 
       {/* Tutor cards */}
       <div className="px-5 pt-2 pb-4 space-y-3">
-        {MOCK_TUTORS.map((tutor) => (
+        {sortedTutors.map((tutor) => (
           <div key={tutor.name} className="bg-card rounded-2xl p-4 shadow-sm">
             <div className="flex items-start gap-3 mb-3">
               <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-extrabold text-lg flex-shrink-0">
@@ -222,8 +267,8 @@ const Explore = () => {
               ))}
             </div>
 
-            {/* Rating + recording */}
-            <div className="flex items-center justify-between mb-4">
+            {/* Rating + recording + hours taught */}
+            <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-4">
               <div className="flex items-center gap-1">
                 <Star size={14} className="text-warning fill-warning" />
                 <span className="text-sm font-bold text-foreground">{tutor.rating}</span>
@@ -231,6 +276,9 @@ const Explore = () => {
               </div>
               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Video size={12} /> Recordings available
+              </span>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                ⏱ {tutor.hoursTaught} hrs taught
               </span>
             </div>
 
@@ -243,11 +291,72 @@ const Explore = () => {
                 })
               }
             >
-              Book Trial Lesson →
+              Book Trial Lesson
             </Button>
           </div>
         ))}
       </div>
+
+      {/* Sort Bottom Sheet */}
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent side="bottom" className="rounded-t-2xl px-5 pb-6 max-w-[430px] mx-auto">
+          <SheetHeader className="mb-4">
+            <SheetTitle className="text-lg font-extrabold text-foreground">Sort Tutors By</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-2">
+            {SORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setSheetSort(opt.value)}
+                className={`w-full flex items-center gap-3 rounded-2xl p-4 text-left transition-all border-2 ${
+                  sheetSort === opt.value
+                    ? "border-primary/40"
+                    : "border-border bg-card"
+                }`}
+                style={sheetSort === opt.value ? { backgroundColor: "rgba(102, 126, 85, 0.06)" } : {}}
+              >
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0`}
+                  style={{ borderColor: sheetSort === opt.value ? "#667e55" : "rgba(107,114,128,0.4)" }}
+                >
+                  {sheetSort === opt.value && (
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#667e55" }} />
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-foreground">{opt.icon} {opt.label}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{opt.subtitle}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-3 mt-5">
+            <Button
+              variant="outline"
+              className="flex-1"
+              style={{ borderColor: "#6B7280", color: "#6B7280" }}
+              onClick={() => {
+                setSheetSort("ratings");
+                setActiveSort("ratings");
+                setSheetOpen(false);
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              className="flex-1"
+              style={{ backgroundColor: "#667e55" }}
+              onClick={() => {
+                setActiveSort(sheetSort);
+                setSheetOpen(false);
+              }}
+            >
+              Apply Sort →
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+
       <BottomNav />
     </div>
   );

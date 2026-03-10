@@ -32,7 +32,7 @@ const TutorCard = () => {
       </div>
 
       {/* Rating + recording */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-4">
         <div className="flex items-center gap-1">
           <Star size={14} className="text-warning fill-warning" />
           <span className="text-sm font-bold text-foreground">4.9</span>
@@ -40,6 +40,9 @@ const TutorCard = () => {
         </div>
         <span className="flex items-center gap-1 text-xs text-muted-foreground">
           <Video size={12} /> Recordings available
+        </span>
+        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+          ⏱ 142 hrs taught
         </span>
       </div>
 
