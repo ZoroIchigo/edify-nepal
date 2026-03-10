@@ -11,6 +11,11 @@ import BookingConfirmed from "./pages/BookingConfirmed";
 import Account from "./pages/Account";
 import Inbox from "./pages/Inbox";
 import NotFound from "./pages/NotFound";
+import InviteParent from "./pages/InviteParent";
+import HouseholdDashboard from "./pages/HouseholdDashboard";
+import PendingVerification from "./pages/PendingVerification";
+import VerificationApproved from "./pages/VerificationApproved";
+import LinkChild from "./pages/LinkChild";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +33,11 @@ const App = () => (
             <Route path="/booking-confirmed" element={<BookingConfirmed />} />
             <Route path="/account" element={<Account />} />
             <Route path="/inbox" element={<Inbox />} />
+            <Route path="/invite-parent" element={<InviteParent />} />
+            <Route path="/household" element={<HouseholdDashboard />} />
+            <Route path="/pending-verification" element={<PendingVerification />} />
+            <Route path="/verification-approved" element={<VerificationApproved />} />
+            <Route path="/link-child" element={<LinkChild />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
