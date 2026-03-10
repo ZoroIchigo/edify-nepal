@@ -681,7 +681,27 @@ const Account = () => {
     {
       label: "Account & Billing",
       items: [
+        {
+          icon: Users,
+          label: "Invite a Parent/Guardian",
+          subtitle: "Let a parent monitor and manage your learning",
+          action: () => navigate("/invite-parent"),
+          badge: (
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-secondary text-secondary-foreground shrink-0">Send Invite →</span>
+          ),
+        },
         { icon: CreditCard, label: "Transaction History", action: () => setScreen("transactions") },
+      ],
+    },
+    {
+      label: "Household",
+      items: [
+        {
+          icon: Users,
+          label: "Household Dashboard",
+          subtitle: user?.role === "Parent" ? "Manage your children's learning" : "Available for Parent accounts",
+          action: () => navigate("/household"),
+        },
       ],
     },
     {
