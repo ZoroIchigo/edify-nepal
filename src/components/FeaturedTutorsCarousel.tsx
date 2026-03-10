@@ -14,6 +14,7 @@ const tutors = [
     rating: 4.9,
     reviews: 38,
     price: "NPR 800",
+    hoursTaught: 142,
   },
   {
     name: "Priya Shrestha",
@@ -25,6 +26,7 @@ const tutors = [
     rating: 4.8,
     reviews: 31,
     price: "NPR 700",
+    hoursTaught: 98,
   },
   {
     name: "Rohan Adhikari",
@@ -36,6 +38,7 @@ const tutors = [
     rating: 4.9,
     reviews: 41,
     price: "NPR 900",
+    hoursTaught: 201,
   },
 ];
 
