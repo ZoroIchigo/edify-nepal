@@ -99,7 +99,7 @@ const FeaturedTutorsCarousel = () => {
                   <span key={s} className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">{s}</span>
                 ))}
               </div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-4">
                 <div className="flex items-center gap-1">
                   <Star size={14} className="text-warning fill-warning" />
                   <span className="text-sm font-bold text-foreground">{tutor.rating}</span>
@@ -107,6 +107,9 @@ const FeaturedTutorsCarousel = () => {
                 </div>
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Video size={12} /> Recordings available
+                </span>
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  ⏱ {tutor.hoursTaught} hrs taught
                 </span>
               </div>
               <div className="flex items-center justify-between mt-1">
