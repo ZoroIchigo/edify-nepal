@@ -245,7 +245,11 @@ const Explore = () => {
       {/* Tutor cards */}
       <div className="px-5 pt-2 pb-4 space-y-3">
         {sortedTutors.map((tutor) => (
-          <div key={tutor.name} className="bg-card rounded-2xl p-4 shadow-sm">
+          <div
+            key={tutor.name}
+            className="bg-card rounded-2xl p-4 shadow-sm cursor-pointer"
+            onClick={() => navigate(`/tutor/${tutor.id}`)}
+          >
             <div className="flex items-start gap-3 mb-3">
               <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-extrabold text-lg flex-shrink-0">
                 {tutor.initials}
@@ -291,11 +295,12 @@ const Explore = () => {
             <Button
               variant="secondary"
               className="w-full"
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate("/checkout", {
                   state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: tutor.rate },
-                })
-              }
+                });
+              }}
             >
               Book Trial Lesson
             </Button>
