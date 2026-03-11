@@ -31,13 +31,19 @@ const AVAILABILITY_OPTIONS = [
   { label: "Sometime this month", subtitle: "No rush, find the best fit" },
 ];
 
-const MOCK_TUTORS = [
-  { name: "Priya Shrestha", initials: "PS", rate: 700, degree: "B.Sc. Physics, TU", rating: 4.8, reviews: 24, subjects: ["Physics", "Math"], hoursTaught: 98 },
-  { name: "Rohan Adhikari", initials: "RA", rate: 900, degree: "M.Sc. Physics, KU", rating: 4.9, reviews: 41, subjects: ["Physics"], hoursTaught: 201 },
-  { name: "Sneha Maharjan", initials: "SM", rate: 650, degree: "B.Com. English, TU", rating: 4.7, reviews: 18, subjects: ["English", "Economics"], hoursTaught: 67 },
-  { name: "Aakash Thapa", initials: "AT", rate: 800, degree: "B.Sc. Physics, PU", rating: 5.0, reviews: 9, subjects: ["Physics", "Math"], hoursTaught: 31 },
-  { name: "Nisha Pandey", initials: "NP", rate: 750, degree: "M.Ed. Physics, TU", rating: 4.9, reviews: 33, subjects: ["Physics"], hoursTaught: 118 },
-];
+import { ALL_TUTORS } from "@/data/tutors";
+
+const MOCK_TUTORS = ALL_TUTORS.filter(t => t.id !== "aaryav-sharma").map(t => ({
+  id: t.id,
+  name: t.name,
+  initials: t.initials,
+  rate: t.rate,
+  degree: `${t.degree}, ${t.institution}`,
+  rating: t.rating,
+  reviews: t.reviews,
+  subjects: t.subjects,
+  hoursTaught: t.hoursTaught,
+}));
 
 const SORT_OPTIONS: { value: SortOption; icon: string; label: string; subtitle: string }[] = [
   { value: "ratings", icon: "⭐", label: "Ratings", subtitle: "Highest rated tutors first" },
@@ -239,7 +245,11 @@ const Explore = () => {
       {/* Tutor cards */}
       <div className="px-5 pt-2 pb-4 space-y-3">
         {sortedTutors.map((tutor) => (
-          <div key={tutor.name} className="bg-card rounded-2xl p-4 shadow-sm">
+          <div
+            key={tutor.name}
+            className="bg-card rounded-2xl p-4 shadow-sm cursor-pointer"
+            onClick={() => navigate(`/tutor/${tutor.id}`)}
+          >
             <div className="flex items-start gap-3 mb-3">
               <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-extrabold text-lg flex-shrink-0">
                 {tutor.initials}
@@ -285,11 +295,12 @@ const Explore = () => {
             <Button
               variant="secondary"
               className="w-full"
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate("/checkout", {
                   state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: tutor.rate },
-                })
-              }
+                });
+              }}
             >
               Book Trial Lesson
             </Button>

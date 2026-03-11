@@ -11,6 +11,7 @@ import BookingConfirmed from "./pages/BookingConfirmed";
 import Account from "./pages/Account";
 import Inbox from "./pages/Inbox";
 import NotFound from "./pages/NotFound";
+import TutorProfile from "./pages/TutorProfile";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/tutor/:id" element={<TutorProfile />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/booking-confirmed" element={<BookingConfirmed />} />
             <Route path="/account" element={<Account />} />

@@ -2,45 +2,9 @@ import { useState, useCallback, useRef } from "react";
 import { BadgeCheck, Star, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ALL_TUTORS } from "@/data/tutors";
 
-const tutors = [
-  {
-    name: "Aaryav Sharma",
-    initials: "AS",
-    avatarBg: "bg-primary/20",
-    avatarText: "text-primary",
-    credential: "🎓 B.Sc. Physics, TU",
-    subjects: ["Physics", "Math"],
-    rating: 4.9,
-    reviews: 38,
-    price: "NPR 800",
-    hoursTaught: 142,
-  },
-  {
-    name: "Priya Shrestha",
-    initials: "PS",
-    avatarBg: "bg-secondary",
-    avatarText: "text-secondary-foreground",
-    credential: "🎓 B.Ed. Mathematics, TU",
-    subjects: ["Math", "Statistics"],
-    rating: 4.8,
-    reviews: 31,
-    price: "NPR 700",
-    hoursTaught: 98,
-  },
-  {
-    name: "Rohan Adhikari",
-    initials: "RA",
-    avatarBg: "bg-primary",
-    avatarText: "text-primary-foreground",
-    credential: "🎓 M.Sc. Physics, KU",
-    subjects: ["Physics", "Chemistry"],
-    rating: 4.9,
-    reviews: 41,
-    price: "NPR 900",
-    hoursTaught: 201,
-  },
-];
+const tutors = ALL_TUTORS.slice(0, 3);
 
 const FeaturedTutorsCarousel = () => {
   const navigate = useNavigate();
@@ -79,7 +43,10 @@ const FeaturedTutorsCarousel = () => {
             className="min-w-[80%] flex-shrink-0"
             style={{ scrollSnapAlign: "start" }}
           >
-            <div className="bg-card rounded-2xl p-4 shadow-sm">
+            <div
+              className="bg-card rounded-2xl p-4 shadow-sm cursor-pointer"
+              onClick={() => navigate(`/tutor/${tutor.id}`)}
+            >
               <div className="flex items-start gap-3 mb-3">
                 <div className={`w-14 h-14 rounded-full ${tutor.avatarBg} flex items-center justify-center font-extrabold text-lg flex-shrink-0 ${tutor.avatarText}`}>
                   {tutor.initials}
@@ -90,13 +57,13 @@ const FeaturedTutorsCarousel = () => {
                     <span className="flex items-center gap-1 text-xs text-primary font-semibold">
                       <BadgeCheck size={14} /> ID Verified
                     </span>
-                    <span className="text-xs text-muted-foreground">{tutor.credential}</span>
+                    <span className="text-xs text-muted-foreground">🎓 {tutor.degree}, {tutor.institution}</span>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2 mb-3">
                 {tutor.subjects.map(s => (
-                  <span key={s} className="px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">{s}</span>
+                  <span key={s} className="px-3 py-1 rounded-full bg-primary/[0.12] text-primary text-xs font-bold">{s}</span>
                 ))}
               </div>
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-4">
@@ -114,7 +81,7 @@ const FeaturedTutorsCarousel = () => {
               </div>
               <div className="flex items-center justify-between mt-1">
                 <div>
-                  <span className="text-lg font-extrabold text-foreground">{tutor.price}</span>
+                  <span className="text-lg font-extrabold text-foreground">NPR {tutor.rate}</span>
                   <span className="text-xs text-muted-foreground ml-1">/ hour</span>
                 </div>
               </div>
@@ -122,7 +89,10 @@ const FeaturedTutorsCarousel = () => {
                 variant="secondary"
                 className="w-full mt-3"
                 size="sm"
-                onClick={() => navigate("/checkout", { state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: parseInt(tutor.price.replace(/\D/g, "")) } })}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate("/checkout", { state: { tutorName: tutor.name, subject: tutor.subjects[0], rate: tutor.rate } });
+                }}
               >
                 Book Trial Lesson
               </Button>
