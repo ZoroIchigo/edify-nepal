@@ -4,13 +4,16 @@ import {
   ArrowLeft, Camera, ChevronRight, BookOpen, Brain, CalendarDays,
   CreditCard, Palette, Headphones, LogOut, Star, Check, X, Plus,
   ChevronLeft, ChevronRight as ChevronRightIcon, Clock, Video,
-  Link as LinkIcon, ShieldCheck, Upload, HelpCircle, ChevronDown
+  Link as LinkIcon, ShieldCheck, Upload, HelpCircle, ChevronDown,
+  User, Wallet, Ticket, Heart, Bell, Lock, Trash2, Eye, EyeOff,
+  FileText
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import {
   Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription
 } from "@/components/ui/drawer";
@@ -18,16 +21,13 @@ import BottomNav from "@/components/BottomNav";
 import { useMockUser } from "@/context/MockUserContext";
 
 type Screen =
-  | "main"
-  | "learnings"
-  | "quiz"
-  | "points"
-  | "transactions"
-  | "schedule"
-  | "addEvent"
-  | "avatarBuilder"
-  | "adultVerification"
-  | "faq";
+  | "main" | "learnings" | "quiz" | "points" | "transactions"
+  | "schedule" | "addEvent" | "avatarBuilder" | "adultVerification" | "faq"
+  | "wallet" | "studentPass" | "bookings" | "savedTutors"
+  | "editProfile" | "payment" | "notifications" | "privacy";
+
+type PassState = "active" | "expired" | "inactive";
+type AccountKind = "adult" | "child";
 
 type QuizStep = 1 | 2 | 3;
 
@@ -86,6 +86,43 @@ const Account = () => {
   const [appearanceSheet, setAppearanceSheet] = useState(false);
   const [helpSheet, setHelpSheet] = useState(false);
   const [logoutSheet, setLogoutSheet] = useState(false);
+
+  // New profile / activity / sub-screen state
+  const accountKind: AccountKind = "adult"; // mock default
+  const [verifStatusSheet, setVerifStatusSheet] = useState(false);
+  const [tierInfoSheet, setTierInfoSheet] = useState(false);
+  const [iconPickerSheet, setIconPickerSheet] = useState(false);
+  const [addPaymentSheet, setAddPaymentSheet] = useState(false);
+  const [deleteConfirmSheet, setDeleteConfirmSheet] = useState(false);
+  const [childIcon, setChildIcon] = useState("🦁");
+  const [childTier] = useState<"bronze" | "silver" | "gold" | "legend">("bronze");
+  const passState: PassState = "inactive"; // mock default
+
+  // Edit profile fields
+  const [fullName, setFullName] = useState("Sushant Thapa");
+  const [phone, setPhone] = useState("+977 98XXXXXXXX");
+  const [email, setEmail] = useState("sushant@example.com");
+  const [district, setDistrict] = useState("Kathmandu Valley");
+  const [gradeLevel, setGradeLevel] = useState("Grade 11 & 12 (NEB)");
+  const [interests, setInterests] = useState<string[]>(["Physics", "Math"]);
+
+  // Notifications
+  const [notif, setNotif] = useState({
+    sessionReminders: true, bookingConfirmations: true,
+    tutorMessages: true, paymentUpdates: true, passExpiry: true,
+  });
+  const [emailDigest, setEmailDigest] = useState<"off" | "weekly">("weekly");
+
+  // Payment / escrow
+  const [autoRelease, setAutoRelease] = useState(true);
+  const [releaseDelay, setReleaseDelay] = useState<"1h" | "3h" | "24h">("24h");
+  const [txnFilter, setTxnFilter] = useState<"1m" | "6m" | "all">("1m");
+
+  // Privacy / security
+  const [pwdExpand, setPwdExpand] = useState(false);
+  const [showCurPwd, setShowCurPwd] = useState(false);
+  const [showNewPwd, setShowNewPwd] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(true);
 
   // Appearance
   const [theme, setTheme] = useState("light");
