@@ -1236,7 +1236,7 @@ const Account = () => {
           <button onClick={() => setScreen("bookings")} className="bg-background rounded-2xl shadow-sm p-3 text-left border border-border">
             <p className="text-xs font-bold text-foreground">📅 Bookings</p>
             <p className="text-xl font-extrabold text-secondary mt-1">8</p>
-            <p className="text-[10px] text-muted-foreground">Last: Falgun 15, 2081</p>
+            <p className="text-[10px] text-muted-foreground">Last: June 15, 2026</p>
           </button>
           {/* Saved Tutors */}
           <button onClick={() => setScreen("savedTutors")} className="bg-background rounded-2xl shadow-sm p-3 text-left border border-border">
